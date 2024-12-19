@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background: linear-gradient(270deg, #f8cdda, #1d2b64);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: #000;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        header {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: white;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .slider {
+            position: relative;
+            max-width: 600px;
+            margin: auto;
+            overflow: hidden;
+            border: 2px solid #888;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+            position: relative;
+        }
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+        }
+        img {
+            height: 300px;
+            object-fit: cover;
+        }
+        .prev-button, .next-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            cursor: pointer;
+            padding: 15px;
+            font-size: 24px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .prev-button:hover, .next-button:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+        .prev-button:focus, .next-button:focus {
+            outline: none;
+        }
+        .background-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(8px);
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+        .contacts {
+            margin: 20px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            color: white;
+        }
+        .contacts a {
+            margin: 0 10px;
+            color: #fff; 
+            text-decoration: none;
+            font-size: 18px;
+            border: 1px solid violet;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .contacts a:hover {
+            text-decoration: underline;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding-top: 60px;
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #ccc;
+        }
+        .captcha-modal {
+            display: none;
+            position: fixed;
+            z-index: 20;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding-top: 60px;
+        }
+        .captcha-content {
+            background-color: white;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            text-align: center;
+        }
+        .gallery img {
+            width: 40%;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s; 
+        }
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        .gallery-container img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin: 5px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">Галерея Чудес</div>
+        <nav class="nav">
+          <ul>
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#gallery">Галерея</a></li>
+            <li><a href="#contact">Контакты</a></li>
+          </ul>
+        </nav>
+    </header>
+    <h1>Слайдер изображений</h1>
+    <div class="slider">
+        <div class="slides">
+            <div class="slide active"><img src="1.jpg" alt="Изображение 1"></div>
+            <div class="slide"><img src="2.jpg" alt="Изображение 2"></div>
+            <div class="slide"><img src="3.jpg" alt="Изображение 3"></div>
+            <div class="slide"><img src="4.jpg" alt="Изображение 4"></div>
+            <div class="slide"><img src="5.jpg" alt="Изображение 5"></div>
+            <div class="slide"><img src="6.jpg" alt="Изображение 6"></div>
+            <div class="slide"><img src="7.jpg" alt="Изображение 7"></div>
+            <div class="slide"><img src="8.jpg" alt="Изображение 8"></div>
+            <div class="slide"><img src="9.jpg" alt="Изображение 9"></div>
+            <div class="slide"><img src="10.jpg" alt="Изображение 10"></div>
+        </div>
+        <button class="prev-button" style="left: 10px;">&#10094;</button>
+        <button class="next-button" style="right: 10px;">&#10095;</button>
+    </div>
+    <div class="background-blur" id="backgroundBlur"></div>
+
+    <div id="captchaModal" class="captcha-modal">
+        <div class="captcha-content">
+            <span class="close" onclick="closeCaptcha()">&times;</span>
+            <h2>Введите капчу</h2>
+            <img src="capcha_1.jpg" alt="Капча" style="width: 100%; max-width: 300px;">
+            <input type="text" id="captchaInput" placeholder="Введите код">
+            <button onclick="checkCaptcha()">Проверить</button>
+            <p id="captchaMessage" style="color: red;"></p>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevButton = document.querySelector('.prev-button');
+        const nextButton = document.querySelector('.next-button');
+        const totalSlides = slides.length; 
+        let slideIndex = 0;
+
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+            });
+            slides[slideIndex].classList.add('active');
+            const currentImage = slides[slideIndex].querySelector('img').src;
+            const backgroundBlur = document.getElementById("backgroundBlur");
+            backgroundBlur.style.backgroundImage = `url(${currentImage})`;
+            backgroundBlur.style.opacity = 1;
+            document.querySelector('.slides').style.transform = `translateX(-${slideIndex * 100}%)`;
+        }
+
+        prevButton.addEventListener('click', () => {
+            slideIndex = (slideIndex - 1 + totalSlides) % totalSlides; 
+            updateSlider(); 
+        });
+
+        nextButton.addEventListener('click', () => {
+            slideIndex = (slideIndex + 1) % totalSlides;
+            updateSlider();
+        });
+
+        function autoSlide() {
+            slideIndex = (slideIndex + 1) % totalSlides;
+            updateSlider();
+        }
+
+        setInterval(autoSlide, 5000);
+        window.onload = function() {
+            updateSlider();
+            openCaptcha();
+        };
+
+        function openCaptcha() {
+            document.getElementById("captchaModal").style.display = "block";
+        }
+
+        function closeCaptcha() {
+            document.getElementById("captchaModal").style.display = "none";
+        }
+
+        function checkCaptcha() {
+            const input = document.getElementById('captchaInput').value;
+            const message = document.getElementById('captchaMessage');
+            if (input === '76447') {
+                message.style.color = 'green';
+                message.textContent = 'Капча пройдена! Спасибо!';
+                closeCaptcha();
+            } else {
+                message.style.color = 'red';
+                message.textContent = 'Неправильный код, попробуйте снова.';
+            }
+        }
+    </script>
+
+    <section id="about" class="about">
+        <h2>О фотографе</h2>
+        <p>Привет! Меня зовут Никита Бойков, я профессиональный фотограф с 10-летним опытом. Моя страсть — запечатлеть самые яркие моменты жизни. Я работаю в жанрах портретной, свадебной и пейзажной фотографии.</p>
+    </section>
+    <section id="gallery" class="gallery">
+        <h2>Галерея</h2>
+        <div class="gallery">
+            <img src="21.jpg" alt="Фото 1" onclick="openImage(this)">
+            <img src="22.jpg" alt="Фото 2" onclick="openImage(this)">
+            <img src="23.jpg" alt="Фото 3" onclick="openImage(this)">
+            <img src="24.jpg" alt="Фото 4" onclick="openImage(this)">
+            <img src="25.jpg" alt="Фото 5" onclick="openImage(this)">
+            <img src="26.jpg" alt="Фото 6" onclick="openImage(this)">
+        </div>
+    </section>
+    
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeImage()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+    <script>
+        function openImage(img) {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImage");
+            modal.style.display = "block";
+            modalImg.src = img.src;
+            modalImg.style.width = "80%";
+            modalImg.style.height = "100%";
+        }
+        function closeImage() {
+            const modal = document.getElementById("imageModal");
+            modal.style.display = "none";
+        }
+    </script>
+    <section id="contact" class="contacts">
+        <h2>Контакты</h2>
+        <p>
+            <a href="https://vk.com" target="_blank">ВКонтакте</a>
+            <a href="https://t.me" target="_blank">Telegram</a>
+            <a href="https://www.youtube.com" target="_blank">YouTube</a>
+        </p>
+    </section>
+    <footer class="footer" style="background-color: rgba(0, 0, 0, 0.7); color: white; padding: 20px;">
+        <p>&copy; 2024 Фотограф Бойков Никита. Все права защищены.</p>
+    </footer>
+</body>
+</html> 
